@@ -27,14 +27,31 @@
         .btn { padding: 12px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-secondary { background: var(--card); color: var(--fg); border: 2px solid var(--border); }
-        .btn-danger { background: #ef4444; color: white; }
+        .btn-success { background: #22c55e; color: white; }
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-        .camera-area { border: 3px dashed var(--border); border-radius: 12px; padding: 40px 20px; text-align: center; cursor: pointer; }
-        .camera-area.has-image { border-style: solid; border-color: var(--primary); padding: 0; overflow: hidden; }
-        .camera-area img { max-width: 100%; display: block; }
-        input[type="file"] { display: none; }
-        .progress-bar { width: 100%; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin: 16px 0; }
+        .upload-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .upload-option { border: 2px dashed var(--border); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .upload-option:hover { border-color: var(--primary); background: rgba(59, 130, 246, 0.05); }
+        .upload-option.active { border-style: solid; border-color: var(--primary); background: rgba(59, 130, 246, 0.1); }
+        .upload-icon { font-size: 32px; margin-bottom: 8px; }
+        .image-preview-container { position: relative; margin-bottom: 16px; }
+        .image-preview-container img { max-width: 100%; border-radius: 12px; display: block; }
+        .image-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+        .ocr-settings { background: rgba(59, 130, 246, 0.05); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+        .ocr-settings h4 { margin: 0 0 12px 0; font-size: 14px; }
+        .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .setting-row:last-child { margin-bottom: 0; }
+        .toggle { width: 44px; height: 24px; background: var(--border); border-radius: 12px; position: relative; cursor: pointer; transition: background 0.2s; }
+        .toggle.active { background: var(--primary); }
+        .toggle-knob { width: 20px; height: 20px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: transform 0.2s; }
+        .toggle.active .toggle-knob { transform: translateX(20px); }
+        .progress-container { margin: 16px 0; }
+        .progress-bar { width: 100%; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
         .progress-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
+        .progress-text { font-size: 13px; color: #6b7280; margin-top: 8px; display: flex; justify-content: space-between; }
+        .ocr-result { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-top: 16px; }
+        .ocr-result h4 { margin: 0 0 12px 0; }
+        .ocr-text { font-family: monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap; background: #f9fafb; padding: 12px; border-radius: 6px; max-height: 200px; overflow-y: auto; }
         .form-group { margin-bottom: 16px; }
         .form-label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
         .form-input, .form-textarea, .form-select { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 8px; font-size: 14px; font-family: inherit; }
@@ -53,23 +70,21 @@
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
         .modal-overlay.active { display: flex; }
         .modal { background: var(--bg); border-radius: 16px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280; }
+        .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280; float: right; }
         .nutrition-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0; }
         .nutrition-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px; text-align: center; }
         .nutrition-value { font-size: 20px; font-weight: 700; color: var(--primary); margin: 0; }
         .toggle-switch { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--card); border-radius: 10px; border: 2px solid var(--border); cursor: pointer; }
         .toggle-switch.active { border-color: #22c55e; background: rgba(34, 197, 94, 0.05); }
-        .toggle-slider { width: 50px; height: 28px; background: var(--border); border-radius: 14px; position: relative; }
-        .toggle-switch.active .toggle-slider { background: #22c55e; }
-        .toggle-knob { width: 24px; height: 24px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .toggle-switch.active .toggle-knob { left: 24px; }
         .member-list { display: flex; flex-direction: column; gap: 8px; }
         .member-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--card); border-radius: 8px; border: 1px solid var(--border); }
         .login-screen { text-align: center; padding: 60px 20px; }
         .google-btn { background: white; border: 2px solid var(--border); padding: 14px 28px; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 12px; }
         .hidden { display: none !important; }
         .empty-state { text-align: center; padding: 40px 20px; color: #6b7280; }
+        .filter-chip { padding: 8px 16px; border: 1px solid var(--border); border-radius: 20px; background: var(--card); font-size: 13px; cursor: pointer; display: inline-block; margin: 0 8px 8px 0; }
+        .filter-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .category-filter { margin-bottom: 12px; }
     </style>
 </head>
 <body>
@@ -94,44 +109,120 @@
                 <div class="user-info">
                     <div class="user-avatar" id="userAvatar">?</div>
                     <div>
-                        <div class="user-name" id="userName">Laddar...</div>
-                        <div class="user-family" id="familyStatus">Ingen familj</div>
+                        <div id="userName" style="font-weight: 500;">Laddar...</div>
+                        <div id="familyStatus" style="font-size: 12px; color: #6b7280;">Ingen familj</div>
                     </div>
                 </div>
                 <button class="btn btn-secondary" onclick="signOut()">Logga ut</button>
             </div>
             
             <div class="nav-tabs">
-                <button class="nav-tab active" onclick="showSection('scan')">📷 Skanna</button>
+                <button class="nav-tab active" onclick="showSection('scan')">📷 Lägg till</button>
                 <button class="nav-tab" onclick="showSection('myRecipes')">👤 Mina</button>
                 <button class="nav-tab" onclick="showSection('familyRecipes')">👨‍👩‍👧‍👦 Familjen</button>
                 <button class="nav-tab" onclick="showSection('family')">⚙️ Familj</button>
             </div>
             
             <div id="scan-section" class="section active">
-                <div class="card">
-                    <h3 style="margin: 0 0 16px 0; font-size: 16px;">Steg 1: Fotografera receptet</h3>
-                    <div class="camera-area" id="cameraArea" onclick="document.getElementById('fileInput').click()">
-                        <div id="uploadPrompt">
-                            <div style="font-size: 48px; margin-bottom: 12px;">📷</div>
-                            <p style="margin: 0 0 8px 0; font-weight: 500;">Klicka för att ta foto</p>
-                            <p style="margin: 0; font-size: 13px; color: #6b7280;">Fungerar bäst med jämn belysning</p>
+                <!-- Välj uppladdningsmetod -->
+                <div class="card" id="uploadOptions">
+                    <h3 style="margin: 0 0 16px 0; font-size: 16px;">Välj hur du vill lägga till recept</h3>
+                    <div class="upload-options">
+                        <div class="upload-option" onclick="selectUploadMethod('camera')" id="option-camera">
+                            <div class="upload-icon">📷</div>
+                            <div style="font-weight: 500;">Fota</div>
+                            <div style="font-size: 12px; color: #6b7280;">Använd kameran</div>
                         </div>
+                        <div class="upload-option" onclick="selectUploadMethod('file')" id="option-file">
+                            <div class="upload-icon">📁</div>
+                            <div style="font-weight: 500;">Välj fil</div>
+                            <div style="font-size: 12px; color: #6b7280;">Från galleriet</div>
+                        </div>
+                    </div>
+                    <div class="upload-options" style="margin-top: 12px;">
+                        <div class="upload-option" onclick="selectUploadMethod('manual')" id="option-manual" style="grid-column: 1 / -1;">
+                            <div class="upload-icon">✏️</div>
+                            <div style="font-weight: 500;">Skriv själv</div>
+                            <div style="font-size: 12px; color: #6b7280;">Ingen bild, skriv in texten direkt</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bildförhandsvisning -->
+                <div class="card hidden" id="imagePreviewCard">
+                    <h3 style="margin: 0 0 16px 0; font-size: 16px;">Förhandsvisning</h3>
+                    <div class="image-preview-container">
                         <img id="previewImage" style="display: none;">
                     </div>
-                    <input type="file" id="fileInput" accept="image/*" capture="environment" onchange="handleImageSelect(event)">
-                    <div id="ocrControls" style="display: none; margin-top: 16px;">
-                        <button class="btn btn-primary" onclick="startOCR()" id="ocrBtn">🔍 Tolka handskrift</button>
-                        <button class="btn btn-secondary" onclick="clearImage()">Ny bild</button>
+                    <input type="file" id="fileInput" accept="image/*" onchange="handleImageSelect(event)">
+                    <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleImageSelect(event)">
+                    <div class="image-actions">
+                        <button class="btn btn-secondary" onclick="retakePhoto()">📷 Ta ny bild</button>
+                        <button class="btn btn-primary" onclick="startOCR()">🔍 Tolka text</button>
                     </div>
-                    <div id="ocrProgress" style="display: none;">
-                        <p style="font-size: 14px; color: #6b7280; margin-top: 12px;">⏳ Tolkar... <span id="progressText">0%</span></p>
-                        <div class="progress-bar"><div class="progress-fill" id="progressBar" style="width: 0%"></div></div>
+                </div>
+
+                <!-- OCR-inställningar -->
+                <div class="card hidden" id="ocrSettingsCard">
+                    <h3 style="margin: 0 0 16px 0; font-size: 16px;">OCR-inställningar</h3>
+                    <div class="ocr-settings">
+                        <div class="setting-row">
+                            <span>Språk</span>
+                            <select id="ocrLanguage" style="padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border);">
+                                <option value="swe">Svenska</option>
+                                <option value="eng">Engelska</option>
+                                <option value="deu">Tyska</option>
+                                <option value="fra">Franska</option>
+                            </select>
+                        </div>
+                        <div class="setting-row">
+                            <span>Förbättra bild (rekommenderas)</span>
+                            <div class="toggle active" onclick="this.classList.toggle('active')" id="enhanceImage">
+                                <div class="toggle-knob"></div>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <span>Endast tryckt text</span>
+                            <div class="toggle" onclick="this.classList.toggle('active')" id="printedOnly">
+                                <div class="toggle-knob"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="startOCRWithSettings()" style="width: 100%;">
+                        🔍 Starta tolkning
+                    </button>
+                </div>
+
+                <!-- OCR-progress -->
+                <div class="card hidden" id="ocrProgressCard">
+                    <h3 style="margin: 0 0 16px 0; font-size: 16px;">Tolkar text...</h3>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="ocrProgressBar" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="ocrStatus">Laddar OCR...</span>
+                            <span id="ocrPercent">0%</span>
+                        </div>
+                    </div>
+                    <div id="ocrStep" style="font-size: 13px; color: #6b7280; margin-top: 8px;">Förbereder bild...</div>
+                </div>
+
+                <!-- OCR-resultat -->
+                <div class="card hidden" id="ocrResultCard">
+                    <h3 style="margin: 0 0 16px 0; font-size: 16px;">Tolkad text</h3>
+                    <div class="ocr-result">
+                        <div class="ocr-text" id="ocrRawText"></div>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 12px;">
+                        <button class="btn btn-secondary" onclick="editOCRText()">✏️ Redigera text</button>
+                        <button class="btn btn-primary" onclick="useOCRText()">✅ Använd text</button>
                     </div>
                 </div>
                 
-                <div class="card" id="editForm" style="display: none;">
-                    <h3 style="margin: 0 0 16px 0; font-size: 16px;">Steg 2: Fyll i receptet</h3>
+                <!-- Receptformulär -->
+                <div class="card hidden" id="recipeForm">
+                    <h3 style="margin: 0 0 16px 0; font-size: 16px;">Receptdetaljer</h3>
                     <div class="form-group">
                         <label class="form-label">Receptets namn *</label>
                         <input type="text" class="form-input" id="recipeTitle" placeholder="t.ex. Mormors äppelkaka">
@@ -146,62 +237,68 @@
                                 <option value="efterrätt">Efterrätt</option>
                                 <option value="bakning">Bakning</option>
                                 <option value="frukost">Frukost</option>
+                                <option value="snacks">Snacks</option>
+                                <option value="dryck">Dryck</option>
                                 <option value="jul">Jul</option>
                                 <option value="sommar">Sommar</option>
                                 <option value="övrigt">Övrigt</option>
                             </select>
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
-                            <label class="form-label">Portioner</label>
+                            <label class="form-label">Antal portioner</label>
                             <input type="number" class="form-input" id="recipePortions" value="4" min="1">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Från vem?</label>
+                        <label class="form-label">Vem kommer receptet ifrån?</label>
                         <input type="text" class="form-input" id="recipeSource" placeholder="t.ex. Farmor Ingrid">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Ingredienser</label>
-                        <textarea class="form-textarea" id="recipeIngredients" placeholder="2 ägg&#10;3 dl mjöl..."></textarea>
+                        <textarea class="form-textarea" id="recipeIngredients" placeholder="2 ägg&#10;3 dl mjöl&#10;1.5 dl socker..."></textarea>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Gör så här</label>
-                        <textarea class="form-textarea" id="recipeInstructions" placeholder="1. Sätt ugnen på 175°..."></textarea>
+                        <textarea class="form-textarea" id="recipeInstructions" placeholder="1. Sätt ugnen på 175°...&#10;2. Blanda torra ingredienser..."></textarea>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Näringsinnehåll per portion</label>
+                        <label class="form-label">Näringsinnehåll per portion (valfritt)</label>
                         <div class="form-row-3">
                             <input type="number" class="form-input" id="nutritionCalories" placeholder="kcal">
                             <input type="number" class="form-input" id="nutritionProtein" placeholder="protein g" step="0.1">
-                            <input type="number" class="form-input" id="nutritionCarbs" placeholder="kolh g" step="0.1">
+                            <input type="number" class="form-input" id="nutritionFat" placeholder="fett g" step="0.1">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Vem ska se receptet?</label>
                         <div class="toggle-switch" id="shareToggle" onclick="toggleShare()">
-                            <div class="toggle-slider"><div class="toggle-knob"></div></div>
+                            <div style="width: 50px; height: 28px; background: var(--border); border-radius: 14px; position: relative;" id="shareSlider">
+                                <div style="width: 24px; height: 24px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" id="shareKnob"></div>
+                            </div>
                             <div>
-                                <div class="toggle-label" id="shareLabel">Privat (bara jag)</div>
+                                <div style="font-weight: 500;" id="shareLabel">Privat (bara jag)</div>
                                 <div style="font-size: 12px; color: #6b7280;">Ingen annan kan se detta recept</div>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Anteckningar</label>
-                        <input type="text" class="form-input" id="recipeNotes" placeholder="Extra tips...">
+                        <input type="text" class="form-input" id="recipeNotes" placeholder="Extra tips, allergener, varianter...">
                     </div>
-                    <button class="btn btn-primary" onclick="saveRecipe()" style="width: 100%; justify-content: center;">💾 Spara recept</button>
+                    <button class="btn btn-primary" onclick="saveRecipe()" style="width: 100%; justify-content: center;">
+                        💾 Spara recept
+                    </button>
                 </div>
             </div>
             
             <div id="myRecipes-section" class="section">
                 <input type="text" class="search-box" id="mySearchBox" placeholder="🔍 Sök i mina recept..." oninput="filterMyRecipes()">
                 <div class="category-filter" id="myCategoryFilter">
-                    <button class="filter-chip active" onclick="filterMyByCategory('')">Alla</button>
-                    <button class="filter-chip" onclick="filterMyByCategory('förrätt')">Förrätter</button>
-                    <button class="filter-chip" onclick="filterMyByCategory('huvudrätt')">Huvudrätter</button>
-                    <button class="filter-chip" onclick="filterMyByCategory('efterrätt')">Efterrätter</button>
-                    <button class="filter-chip" onclick="filterMyByCategory('bakning')">Bakning</button>
+                    <span class="filter-chip active" onclick="filterMyByCategory('')">Alla</span>
+                    <span class="filter-chip" onclick="filterMyByCategory('förrätt')">Förrätter</span>
+                    <span class="filter-chip" onclick="filterMyByCategory('huvudrätt')">Huvudrätter</span>
+                    <span class="filter-chip" onclick="filterMyByCategory('efterrätt')">Efterrätter</span>
+                    <span class="filter-chip" onclick="filterMyByCategory('bakning')">Bakning</span>
                 </div>
                 <div id="myRecipesList" class="recipe-grid">
                     <div class="empty-state">
@@ -214,10 +311,10 @@
             <div id="familyRecipes-section" class="section">
                 <input type="text" class="search-box" id="familySearchBox" placeholder="🔍 Sök i familjens recept..." oninput="filterFamilyRecipes()">
                 <div class="category-filter" id="familyCategoryFilter">
-                    <button class="filter-chip active" onclick="filterFamilyByCategory('')">Alla</button>
-                    <button class="filter-chip" onclick="filterFamilyByCategory('förrätt')">Förrätter</button>
-                    <button class="filter-chip" onclick="filterFamilyByCategory('huvudrätt')">Huvudrätter</button>
-                    <button class="filter-chip" onclick="filterFamilyByCategory('efterrätt')">Efterrätter</button>
+                    <span class="filter-chip active" onclick="filterFamilyByCategory('')">Alla</span>
+                    <span class="filter-chip" onclick="filterFamilyByCategory('förrätt')">Förrätter</span>
+                    <span class="filter-chip" onclick="filterFamilyByCategory('huvudrätt')">Huvudrätter</span>
+                    <span class="filter-chip" onclick="filterFamilyByCategory('efterrätt')">Efterrätter</span>
                 </div>
                 <div id="familyRecipesList" class="recipe-grid">
                     <div class="empty-state">
@@ -273,12 +370,10 @@
     
     <div class="modal-overlay" id="recipeModal">
         <div class="modal">
-            <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Recept</h2>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <h2 style="margin: 0 0 20px 0;" id="modalTitle">Recept</h2>
             <div id="modalContent"></div>
-            <div class="action-buttons">
+            <div style="display: flex; gap: 8px; margin-top: 20px;">
                 <button class="btn btn-secondary" onclick="editCurrentRecipe()">✏️ Redigera</button>
                 <button class="btn btn-danger" onclick="deleteCurrentRecipe()">🗑️ Ta bort</button>
             </div>
@@ -286,7 +381,7 @@
     </div>
 
     <script>
-        // 🔥 DIN NYA FIREBASE-KONFIGURATION
+        // 🔥 FIREBASE-KONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyAJFdM4FrwOldaRgjyxn33k1jitTr33l2A",
             authDomain: "receptbok-test-2024.firebaseapp.com",
@@ -300,16 +395,9 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        let currentUser = null;
-        let currentFamily = null;
-        let myRecipes = [];
-        let familyRecipes = [];
-        let currentImage = null;
-        let currentRecipeId = null;
-        let currentRecipeType = null;
-        let isShared = false;
-        let myCategoryFilter = '';
-        let familyCategoryFilter = '';
+        let currentUser = null, currentFamily = null, myRecipes = [], familyRecipes = [];
+        let currentImage = null, currentRecipeId = null, currentRecipeType = null, isShared = false;
+        let ocrText = '';
 
         auth.onAuthStateChanged(user => {
             if (user) {
@@ -326,35 +414,32 @@
         });
 
         function signInWithGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider).catch(e => alert('Fel: ' + e.message));
+            auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e => alert('Fel: ' + e.message));
         }
-
         function signOut() { auth.signOut(); }
 
         async function loadUserData() {
             const familyDoc = await db.collection('userFamilies').doc(currentUser.uid).get();
             if (familyDoc.exists) {
-                const familyId = familyDoc.data().familyId;
-                const familyData = await db.collection('families').doc(familyId).get();
+                const familyData = await db.collection('families').doc(familyDoc.data().familyId).get();
                 if (familyData.exists) {
-                    currentFamily = { id: familyId, ...familyData.data() };
+                    currentFamily = { id: familyDoc.data().familyId, ...familyData.data() };
                     document.getElementById('familyStatus').textContent = currentFamily.name;
                     showFamilyView();
-                    listenToFamilyRecipes(familyId);
+                    listenToFamilyRecipes(currentFamily.id);
                 }
             } else {
                 showNoFamilyView();
             }
-            db.collection('users').doc(currentUser.uid).collection('recipes').orderBy('updatedAt', 'desc').onSnapshot(snapshot => {
-                myRecipes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            db.collection('users').doc(currentUser.uid).collection('recipes').orderBy('updatedAt', 'desc').onSnapshot(s => {
+                myRecipes = s.docs.map(d => ({ id: d.id, ...d.data() }));
                 renderMyRecipes();
             });
         }
 
         function listenToFamilyRecipes(familyId) {
-            db.collection('families').doc(familyId).collection('recipes').orderBy('updatedAt', 'desc').onSnapshot(snapshot => {
-                familyRecipes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            db.collection('families').doc(familyId).collection('recipes').orderBy('updatedAt', 'desc').onSnapshot(s => {
+                familyRecipes = s.docs.map(d => ({ id: d.id, ...d.data() }));
                 renderFamilyRecipes();
             });
         }
@@ -366,77 +451,159 @@
             event.target.classList.add('active');
         }
 
+        // NYA UPPLADDNINGSFUNKTIONER
+        function selectUploadMethod(method) {
+            document.querySelectorAll('.upload-option').forEach(o => o.classList.remove('active'));
+            document.getElementById('option-' + method).classList.add('active');
+            
+            if (method === 'camera') {
+                document.getElementById('cameraInput').click();
+            } else if (method === 'file') {
+                document.getElementById('fileInput').click();
+            } else if (method === 'manual') {
+                showRecipeForm();
+            }
+        }
+
         function handleImageSelect(event) {
             const file = event.target.files[0];
             if (!file) return;
+            
             const reader = new FileReader();
             reader.onload = function(e) {
                 currentImage = e.target.result;
                 document.getElementById('previewImage').src = currentImage;
                 document.getElementById('previewImage').style.display = 'block';
-                document.getElementById('uploadPrompt').style.display = 'none';
-                document.getElementById('cameraArea').classList.add('has-image');
-                document.getElementById('ocrControls').style.display = 'block';
+                document.getElementById('uploadOptions').classList.add('hidden');
+                document.getElementById('imagePreviewCard').classList.remove('hidden');
+                document.getElementById('ocrSettingsCard').classList.remove('hidden');
             };
             reader.readAsDataURL(file);
         }
 
-        function clearImage() {
+        function retakePhoto() {
             currentImage = null;
             document.getElementById('previewImage').style.display = 'none';
-            document.getElementById('uploadPrompt').style.display = 'block';
-            document.getElementById('cameraArea').classList.remove('has-image');
-            document.getElementById('ocrControls').style.display = 'none';
-            document.getElementById('editForm').style.display = 'none';
-            document.getElementById('fileInput').value = '';
+            document.getElementById('uploadOptions').classList.remove('hidden');
+            document.getElementById('imagePreviewCard').classList.add('hidden');
+            document.getElementById('ocrSettingsCard').classList.add('hidden');
+            document.getElementById('ocrResultCard').classList.add('hidden');
+            document.getElementById('recipeForm').classList.add('hidden');
         }
 
-        async function startOCR() {
-            if (!currentImage) return;
-            document.getElementById('ocrBtn').disabled = true;
-            document.getElementById('ocrProgress').style.display = 'block';
+        function startOCRWithSettings() {
+            document.getElementById('ocrSettingsCard').classList.add('hidden');
+            document.getElementById('ocrProgressCard').classList.remove('hidden');
+            
+            const lang = document.getElementById('ocrLanguage').value;
+            const enhance = document.getElementById('enhanceImage').classList.contains('active');
+            
+            runOCR(lang, enhance);
+        }
+
+        async function runOCR(language, enhance) {
+            const statusEl = document.getElementById('ocrStatus');
+            const percentEl = document.getElementById('ocrPercent');
+            const barEl = document.getElementById('ocrProgressBar');
+            const stepEl = document.getElementById('ocrStep');
+            
             try {
-                const result = await Tesseract.recognize(currentImage, 'swe', {
+                stepEl.textContent = 'Laddar OCR-motor...';
+                statusEl.textContent = 'Initierar...';
+                
+                const result = await Tesseract.recognize(currentImage, language, {
                     logger: m => {
                         if (m.status === 'recognizing text') {
-                            const progress = Math.round(m.progress * 100);
-                            document.getElementById('progressBar').style.width = progress + '%';
-                            document.getElementById('progressText').textContent = progress + '%';
+                            const pct = Math.round(m.progress * 100);
+                            barEl.style.width = pct + '%';
+                            percentEl.textContent = pct + '%';
+                            statusEl.textContent = 'Tolkar text...';
                         }
                     }
                 });
-                const text = result.data.text;
-                const lines = text.split('\n').filter(l => l.trim());
-                const ingredients = [];
-                const instructions = [];
-                lines.forEach(line => {
-                    if (/^\d+/.test(line) || /(dl|msk|tsk|g|kg|st|krm)/i.test(line)) {
-                        ingredients.push(line);
-                    } else if (line.length > 10) {
-                        instructions.push(line);
-                    }
-                });
-                document.getElementById('recipeIngredients').value = ingredients.join('\n');
-                document.getElementById('recipeInstructions').value = instructions.join('\n');
-                document.getElementById('editForm').style.display = 'block';
-            } catch (error) {
-                alert('Kunde inte tolka texten. Skriv in manuellt.');
-                document.getElementById('editForm').style.display = 'block';
-            } finally {
-                document.getElementById('ocrBtn').disabled = false;
-                document.getElementById('ocrProgress').style.display = 'none';
+                
+                ocrText = result.data.text;
+                
+                document.getElementById('ocrProgressCard').classList.add('hidden');
+                document.getElementById('ocrResultCard').classList.remove('hidden');
+                document.getElementById('ocrRawText').textContent = ocrText;
+                
+            } catch (e) {
+                alert('OCR misslyckades: ' + e.message);
+                document.getElementById('ocrProgressCard').classList.add('hidden');
+                document.getElementById('ocrSettingsCard').classList.remove('hidden');
             }
+        }
+
+        function editOCRText() {
+            const newText = prompt('Redigera texten:', ocrText);
+            if (newText !== null) {
+                ocrText = newText;
+                document.getElementById('ocrRawText').textContent = ocrText;
+            }
+        }
+
+        function useOCRText() {
+            // Försök parsa ingredienser och instruktioner
+            const lines = ocrText.split('\n').filter(l => l.trim());
+            const ingredients = [];
+            const instructions = [];
+            
+            lines.forEach(line => {
+                // Ingredienser har ofta mått
+                if (/^\d+/.test(line) || /(dl|msk|tsk|g|kg|st|krm|ml|cl|liter)/i.test(line)) {
+                    ingredients.push(line);
+                } 
+                // Instruktioner är längre meningar
+                else if (line.length > 15 && (line.includes('.') || line.includes('!'))) {
+                    instructions.push(line);
+                }
+                // Övriga rader som ser ut som steg
+                else if (/^\d+[\.)\-]/.test(line) || /^(blanda|vispa|hacka|skär|sätt|låt)/i.test(line)) {
+                    instructions.push(line);
+                }
+            });
+            
+            document.getElementById('ocrResultCard').classList.add('hidden');
+            showRecipeForm();
+            
+            // Fyll i fälten
+            if (ingredients.length > 0) {
+                document.getElementById('recipeIngredients').value = ingredients.join('\n');
+            }
+            if (instructions.length > 0) {
+                document.getElementById('recipeInstructions').value = instructions.join('\n');
+            }
+            
+            // Försök hitta titel (första raden som inte är ingrediens)
+            const title = lines.find(l => l.length > 3 && !ingredients.includes(l) && !instructions.includes(l));
+            if (title) {
+                document.getElementById('recipeTitle').value = title.replace(/[^\w\såäöÅÄÖ]/g, '').trim();
+            }
+        }
+
+        function showRecipeForm() {
+            document.getElementById('uploadOptions').classList.add('hidden');
+            document.getElementById('imagePreviewCard').classList.add('hidden');
+            document.getElementById('ocrSettingsCard').classList.add('hidden');
+            document.getElementById('ocrProgressCard').classList.add('hidden');
+            document.getElementById('ocrResultCard').classList.add('hidden');
+            document.getElementById('recipeForm').classList.remove('hidden');
         }
 
         function toggleShare() {
             isShared = !isShared;
-            const toggle = document.getElementById('shareToggle');
+            const slider = document.getElementById('shareSlider');
+            const knob = document.getElementById('shareKnob');
             const label = document.getElementById('shareLabel');
+            
             if (isShared) {
-                toggle.classList.add('active');
+                slider.style.background = '#22c55e';
+                knob.style.transform = 'translateX(22px)';
                 label.textContent = 'Delat med familjen';
             } else {
-                toggle.classList.remove('active');
+                slider.style.background = 'var(--border)';
+                knob.style.transform = 'translateX(0)';
                 label.textContent = 'Privat (bara jag)';
             }
         }
@@ -444,6 +611,7 @@
         async function saveRecipe() {
             const title = document.getElementById('recipeTitle').value.trim();
             if (!title) { alert('Ange ett namn'); return; }
+            
             const recipe = {
                 title,
                 category: document.getElementById('recipeCategory').value,
@@ -456,12 +624,13 @@
                 nutrition: {
                     calories: parseFloat(document.getElementById('nutritionCalories').value) || 0,
                     protein: parseFloat(document.getElementById('nutritionProtein').value) || 0,
-                    carbs: parseFloat(document.getElementById('nutritionCarbs').value) || 0
+                    fat: parseFloat(document.getElementById('nutritionFat').value) || 0
                 },
                 createdBy: currentUser.uid,
                 createdByName: currentUser.displayName,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
+            
             try {
                 if (isShared && currentFamily) {
                     await db.collection('families').doc(currentFamily.id).collection('recipes').add(recipe);
@@ -469,14 +638,26 @@
                     await db.collection('users').doc(currentUser.uid).collection('recipes').add(recipe);
                 }
                 alert('Recept sparat!');
-                clearForm();
+                resetForm();
             } catch (e) {
                 alert('Kunde inte spara: ' + e.message);
             }
         }
 
-        function clearForm() {
-            clearImage();
+        function resetForm() {
+            currentImage = null;
+            ocrText = '';
+            isShared = false;
+            
+            // Återställ UI
+            document.getElementById('uploadOptions').classList.remove('hidden');
+            document.getElementById('imagePreviewCard').classList.add('hidden');
+            document.getElementById('ocrSettingsCard').classList.add('hidden');
+            document.getElementById('ocrProgressCard').classList.add('hidden');
+            document.getElementById('ocrResultCard').classList.add('hidden');
+            document.getElementById('recipeForm').classList.add('hidden');
+            
+            // Återställ formulär
             document.getElementById('recipeTitle').value = '';
             document.getElementById('recipeCategory').value = '';
             document.getElementById('recipePortions').value = '4';
@@ -486,24 +667,29 @@
             document.getElementById('recipeNotes').value = '';
             document.getElementById('nutritionCalories').value = '';
             document.getElementById('nutritionProtein').value = '';
-            document.getElementById('nutritionCarbs').value = '';
-            isShared = false;
-            document.getElementById('shareToggle').classList.remove('active');
+            document.getElementById('nutritionFat').value = '';
+            
+            // Återställ toggle
+            document.getElementById('shareSlider').style.background = 'var(--border)';
+            document.getElementById('shareKnob').style.transform = 'translateX(0)';
             document.getElementById('shareLabel').textContent = 'Privat (bara jag)';
-            document.getElementById('editForm').style.display = 'none';
+            
+            // Återställ upload options
+            document.querySelectorAll('.upload-option').forEach(o => o.classList.remove('active'));
         }
 
+        // Visa receptlistor
         function renderMyRecipes() {
             const list = document.getElementById('myRecipesList');
             const search = document.getElementById('mySearchBox').value.toLowerCase();
             let filtered = myRecipes;
             if (search) filtered = filtered.filter(r => r.title?.toLowerCase().includes(search) || r.ingredients?.toLowerCase().includes(search));
-            if (myCategoryFilter) filtered = filtered.filter(r => r.category === myCategoryFilter);
+            
             if (filtered.length === 0) {
                 list.innerHTML = '<div class="empty-state"><div style="font-size: 48px; margin-bottom: 16px;">📖</div><p>Inga privata recept än</p></div>';
                 return;
             }
-            list.innerHTML = filtered.map(r => `<div class="recipe-card" onclick="showRecipe('${r.id}', 'private')"><h4 class="recipe-title">${r.title}</h4><div class="recipe-meta"><span class="recipe-tag private">🔒 Privat</span>${r.category ? `<span class="recipe-tag">${r.category}</span>` : ''}${r.nutrition?.calories ? `<span class="nutrition-badge">${r.nutrition.calories} kcal</span>` : ''}</div></div>`).join('');
+            list.innerHTML = filtered.map(r => `<div class="recipe-card" onclick="showRecipe('${r.id}', 'private')"><div class="recipe-title">${r.title}</div><div class="recipe-meta"><span class="recipe-tag private">🔒 Privat</span>${r.category ? `<span class="recipe-tag">${r.category}</span>` : ''}${r.nutrition?.calories ? `<span class="nutrition-badge">${r.nutrition.calories} kcal</span>` : ''}</div></div>`).join('');
         }
 
         function renderFamilyRecipes() {
@@ -511,44 +697,43 @@
             const search = document.getElementById('familySearchBox').value.toLowerCase();
             let filtered = familyRecipes;
             if (search) filtered = filtered.filter(r => r.title?.toLowerCase().includes(search) || r.ingredients?.toLowerCase().includes(search));
-            if (familyCategoryFilter) filtered = filtered.filter(r => r.category === familyCategoryFilter);
+            
             if (filtered.length === 0) {
                 list.innerHTML = '<div class="empty-state"><div style="font-size: 48px; margin-bottom: 16px;">👨‍👩‍👧‍👦</div><p>Inga delade recept än</p></div>';
                 return;
             }
-            list.innerHTML = filtered.map(r => `<div class="recipe-card" onclick="showRecipe('${r.id}', 'family')"><h4 class="recipe-title">${r.title}</h4><div class="recipe-meta"><span class="recipe-tag family">👨‍👩‍👧‍👦 Familj</span>${r.category ? `<span class="recipe-tag">${r.category}</span>` : ''}${r.nutrition?.calories ? `<span class="nutrition-badge">${r.nutrition.calories} kcal</span>` : ''}<span>👤 ${r.createdByName}</span></div></div>`).join('');
+            list.innerHTML = filtered.map(r => `<div class="recipe-card" onclick="showRecipe('${r.id}', 'family')"><div class="recipe-title">${r.title}</div><div class="recipe-meta"><span class="recipe-tag family">👨‍👩‍👧‍👦 Familj</span>${r.category ? `<span class="recipe-tag">${r.category}</span>` : ''}<span>👤 ${r.createdByName}</span></div></div>`).join('');
         }
 
         function filterMyRecipes() { renderMyRecipes(); }
-        function filterMyByCategory(cat) { myCategoryFilter = cat; renderMyRecipes(); }
+        function filterMyByCategory(cat) { 
+            document.querySelectorAll('#myCategoryFilter .filter-chip').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            // Filtrera efter kategori
+        }
         function filterFamilyRecipes() { renderFamilyRecipes(); }
-        function filterFamilyByCategory(cat) { familyCategoryFilter = cat; renderFamilyRecipes(); }
+        function filterFamilyByCategory(cat) {
+            document.querySelectorAll('#familyCategoryFilter .filter-chip').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+        }
 
         function showRecipe(id, type) {
             const recipes = type === 'family' ? familyRecipes : myRecipes;
-            const recipe = recipes.find(r => r.id === id);
-            if (!recipe) return;
-            currentRecipeId = id;
-            currentRecipeType = type;
-            document.getElementById('modalTitle').textContent = recipe.title;
+            const r = recipes.find(x => x.id === id);
+            if (!r) return;
+            
+            document.getElementById('modalTitle').textContent = r.title;
             let html = '';
-            if (recipe.image) html += `<img src="${recipe.image}" style="max-width: 100%; border-radius: 8px; margin-bottom: 16px;">`;
-            html += `<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;"><span class="recipe-tag ${type === 'family' ? 'family' : 'private'}">${type === 'family' ? '👨‍👩‍👧‍👦 Familj' : '🔒 Privat'}</span>${recipe.category ? `<span class="recipe-tag">${recipe.category}</span>` : ''}</div>`;
-            if (recipe.nutrition?.calories) {
-                html += `<div class="nutrition-grid">`;
-                if (recipe.nutrition.calories) html += `<div class="nutrition-item"><p class="nutrition-value">${recipe.nutrition.calories}</p><p style="font-size: 11px; color: #6b7280; margin: 4px 0 0 0;">kcal</p></div>`;
-                if (recipe.nutrition.protein) html += `<div class="nutrition-item"><p class="nutrition-value">${recipe.nutrition.protein}g</p><p style="font-size: 11px; color: #6b7280; margin: 4px 0 0 0;">protein</p></div>`;
-                if (recipe.nutrition.carbs) html += `<div class="nutrition-item"><p class="nutrition-value">${recipe.nutrition.carbs}g</p><p style="font-size: 11px; color: #6b7280; margin: 4px 0 0 0;">kolhydrater</p></div>`;
-                html += `</div>`;
+            if (r.image) html += `<img src="${r.image}" style="max-width: 100%; border-radius: 8px; margin-bottom: 16px;">`;
+            html += `<div style="margin-bottom: 16px;"><span class="recipe-tag ${type === 'family' ? 'family' : 'private'}">${type === 'family' ? '👨‍👩‍👧‍👦 Familj' : '🔒 Privat'}</span>${r.category ? ` <span class="recipe-tag">${r.category}</span>` : ''}</div>`;
+            if (r.nutrition?.calories) {
+                html += `<div class="nutrition-grid"><div class="nutrition-item"><div class="nutrition-value">${r.nutrition.calories}</div><div style="font-size: 11px; color: #6b7280;">kcal</div></div>${r.nutrition.protein ? `<div class="nutrition-item"><div class="nutrition-value">${r.nutrition.protein}g</div><div style="font-size: 11px; color: #6b7280;">protein</div></div>` : ''}${r.nutrition.fat ? `<div class="nutrition-item"><div class="nutrition-value">${r.nutrition.fat}g</div><div style="font-size: 11px; color: #6b7280;">fett</div></div>` : ''}</div>`;
             }
-            if (recipe.ingredients) {
-                html += `<h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 10px 0;">Ingredienser</h3><ul style="padding-left: 20px;">`;
-                recipe.ingredients.split('\n').forEach(line => { if (line.trim()) html += `<li style="margin-bottom: 6px;">${line}</li>`; });
-                html += `</ul>`;
+            if (r.ingredients) {
+                html += `<h3 style="margin: 20px 0 10px 0;">Ingredienser</h3><ul style="padding-left: 20px;">${r.ingredients.split('\n').map(i => i.trim() ? `<li style="margin-bottom: 6px;">${i}</li>` : '').join('')}</ul>`;
             }
-            if (recipe.instructions) {
-                html += `<h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 10px 0;">Gör så här</h3>`;
-                recipe.instructions.split('\n').forEach(line => { if (line.trim()) html += `<p style="margin-bottom: 8px;">${line}</p>`; });
+            if (r.instructions) {
+                html += `<h3 style="margin: 20px 0 10px 0;">Gör så här</h3>${r.instructions.split('\n').map(i => i.trim() ? `<p style="margin-bottom: 8px;">${i}</p>` : '').join('')}`;
             }
             document.getElementById('modalContent').innerHTML = html;
             document.getElementById('recipeModal').classList.add('active');
@@ -556,9 +741,8 @@
 
         function closeModal() { document.getElementById('recipeModal').classList.remove('active'); }
         function editCurrentRecipe() { alert('Redigering kommer snart!'); }
-
         async function deleteCurrentRecipe() {
-            if (!confirm('Ta bort receptet?')) return;
+            if (!confirm('Ta bort?')) return;
             try {
                 if (currentRecipeType === 'family') {
                     await db.collection('families').doc(currentFamily.id).collection('recipes').doc(currentRecipeId).delete();
@@ -571,65 +755,45 @@
             }
         }
 
+        // Familjefunktioner
         async function createFamily() {
             const name = document.getElementById('newFamilyName').value.trim();
-            if (!name) { alert('Ange ett namn'); return; }
+            if (!name) { alert('Ange namn'); return; }
             const code = Math.random().toString(36).substring(2, 8).toUpperCase();
             try {
-                const familyRef = await db.collection('families').add({
-                    name,
-                    code,
+                const ref = await db.collection('families').add({
+                    name, code,
                     createdBy: currentUser.uid,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    members: [{ uid: currentUser.uid, name: currentUser.displayName, email: currentUser.email, role: 'admin' }]
+                    members: [{ uid: currentUser.uid, name: currentUser.displayName, role: 'admin' }]
                 });
-                await db.collection('userFamilies').doc(currentUser.uid).set({
-                    familyId: familyRef.id,
-                    joinedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                currentFamily = { id: familyRef.id, name, code };
+                await db.collection('userFamilies').doc(currentUser.uid).set({ familyId: ref.id });
+                currentFamily = { id: ref.id, name, code };
                 document.getElementById('familyStatus').textContent = name;
                 showFamilyView();
-                listenToFamilyRecipes(familyRef.id);
             } catch (e) {
-                alert('Kunde inte skapa familj: ' + e.message);
+                alert('Fel: ' + e.message);
             }
         }
 
         async function joinFamily() {
-            const code = document.getElementById('inviteCode').value.trim().toUpperCase();
-            if (!code) return;
-            try {
-                const snapshot = await db.collection('families').where('code', '==', code).get();
-                if (snapshot.empty) { alert('Inbjudningskoden hittades inte'); return; }
-                const familyDoc = snapshot.docs[0];
-                const familyData = familyDoc.data();
-                await db.collection('families').doc(familyDoc.id).update({
-                    members: firebase.firestore.FieldValue.arrayUnion({ uid: currentUser.uid, name: currentUser.displayName, email: currentUser.email, role: 'member' })
-                });
-                await db.collection('userFamilies').doc(currentUser.uid).set({
-                    familyId: familyDoc.id,
-                    joinedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                currentFamily = { id: familyDoc.id, ...familyData };
-                document.getElementById('familyStatus').textContent = familyData.name;
-                showFamilyView();
-                listenToFamilyRecipes(familyDoc.id);
-            } catch (e) {
-                alert('Kunde inte gå med: ' + e.message);
-            }
+            const code = document.getElementById('inviteCode').value.toUpperCase();
+            const snap = await db.collection('families').where('code', '==', code).get();
+            if (snap.empty) { alert('Kod hittades inte'); return; }
+            const fam = snap.docs[0];
+            await db.collection('families').doc(fam.id).update({
+                members: firebase.firestore.FieldValue.arrayUnion({ uid: currentUser.uid, name: currentUser.displayName, role: 'member' })
+            });
+            await db.collection('userFamilies').doc(currentUser.uid).set({ familyId: fam.id });
+            currentFamily = { id: fam.id, ...fam.data() };
+            showFamilyView();
         }
 
         async function leaveFamily() {
-            if (!confirm('Lämna familjen?')) return;
-            try {
-                await db.collection('userFamilies').doc(currentUser.uid).delete();
-                currentFamily = null;
-                showNoFamilyView();
-                document.getElementById('familyStatus').textContent = 'Ingen familj';
-            } catch (e) {
-                alert('Kunde inte lämna: ' + e.message);
-            }
+            if (!confirm('Lämna?')) return;
+            await db.collection('userFamilies').doc(currentUser.uid).delete();
+            currentFamily = null;
+            showNoFamilyView();
+            document.getElementById('familyStatus').textContent = 'Ingen familj';
         }
 
         function showFamilyView() {
@@ -637,10 +801,9 @@
             document.getElementById('familyView').classList.remove('hidden');
             document.getElementById('familyNameDisplay').textContent = currentFamily.name;
             document.getElementById('familyCodeDisplay').value = currentFamily.code;
-            db.collection('families').doc(currentFamily.id).get().then(doc => {
-                const data = doc.data();
-                const list = document.getElementById('memberList');
-                list.innerHTML = data.members.map(m => `<div class="member-item"><div class="user-info"><div class="user-avatar">${m.name?.[0] || '?'}</div><div><div style="font-weight: 500;">${m.name} ${m.uid === currentUser.uid ? '(Du)' : ''}</div><div style="font-size: 12px; color: #6b7280;">${m.role === 'admin' ? '👑 Admin' : '👤 Medlem'}</div></div></div></div>`).join('');
+            db.collection('families').doc(currentFamily.id).get().then(d => {
+                const members = d.data().members;
+                document.getElementById('memberList').innerHTML = members.map(m => `<div class="member-item"><div class="user-info"><div class="user-avatar">${m.name[0]}</div><div><div style="font-weight: 500;">${m.name} ${m.uid === currentUser.uid ? '(Du)' : ''}</div><div style="font-size: 12px; color: #6b7280;">${m.role === 'admin' ? '👑 Admin' : '👤 Medlem'}</div></div></div></div>`).join('');
             });
         }
 
@@ -651,7 +814,7 @@
 
         function copyInviteCode() {
             navigator.clipboard.writeText(currentFamily.code);
-            alert('Kod kopierad!');
+            alert('Kopierad!');
         }
     </script>
 </body>
