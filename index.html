@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <h1>Firebase Test</h1>
+    <button onclick="login()">Logga in med Google</button>
+    <p id="status"></p>
+    
+    <script>
+        firebase.initializeApp({
+            apiKey: "AIzaSyC80aJi_XyG74vIVJ6CfPmfWXpeI2mVB6Q",
+            authDomain: "familjens-receptbok.firebaseapp.com",
+            projectId: "familjens-receptbok"
+        });
+        
+        function login() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then(() => document.getElementById('status').textContent = "✅ Inloggad!")
+                .catch(e => document.getElementById('status').textContent = "❌ Fel: " + e.message);
+        }
+    </script>
+</body>
+</html>
