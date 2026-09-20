@@ -1,37 +1,270 @@
 <!DOCTYPE html>
-<html>
+<html lang="sv">
 <head>
-    <title>Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Familjens Receptsamling</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { color: #333; }
+        .btn { padding: 15px 30px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+        .btn-primary { background: #4285f4; color: white; }
+        .btn-secondary { background: #fff; color: #333; border: 2px solid #ddd; }
+        .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .hidden { display: none; }
+        .recipe-card { background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; border: 1px solid #e5e7eb; }
+        .recipe-title { font-weight: 600; margin-bottom: 5px; }
+        .recipe-meta { font-size: 12px; color: #6b7280; }
+        .tag { background: #e5e7eb; padding: 4px 10px; border-radius: 20px; font-size: 12px; margin-right: 5px; }
+        .tag.family { background: #d1fae5; color: #065f46; }
+        input, textarea, select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+        textarea { min-height: 100px; }
+        .nav { display: flex; gap: 10px; margin-bottom: 20px; }
+        .nav button { flex: 1; padding: 10px; border: none; background: #e5e7eb; border-radius: 6px; cursor: pointer; }
+        .nav button.active { background: #4285f4; color: white; }
+    </style>
 </head>
 <body>
-    <h1>Firebase Test</h1>
-    <button onclick="login()">Logga in med Google</button>
-    <p id="status"></p>
-    
+    <div id="loginScreen">
+        <div class="header">
+            <h1>🍳 Familjens Receptsamling</h1>
+            <p>Logga in för att börja</p>
+        </div>
+        <div class="card" style="text-align: center;">
+            <button class="btn btn-primary" onclick="signInWithGoogle()" style="display: inline-flex; align-items: center; gap: 10px;">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path fill="white" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="white" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="white" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="white" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                Logga in med Google
+            </button>
+            <p id="loginStatus" style="margin-top: 15px; color: #666;"></p>
+        </div>
+    </div>
+
+    <div id="mainApp" class="hidden">
+        <div class="header">
+            <h1>🍳 Familjens Receptsamling</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span id="userName"></span>
+                <button class="btn btn-secondary" onclick="signOut()">Logga ut</button>
+            </div>
+        </div>
+
+        <div class="nav">
+            <button class="active" onclick="showTab('add')">➕ Nytt recept</button>
+            <button onclick="showTab('my')">👤 Mina</button>
+            <button onclick="showTab('family')">👨‍👩‍👧‍👦 Familj</button>
+        </div>
+
+        <div id="tab-add">
+            <div class="card">
+                <h3>Lägg till recept</h3>
+                <input type="text" id="title" placeholder="Receptets namn">
+                <select id="category">
+                    <option value="">Välj kategori...</option>
+                    <option value="förrätt">Förrätt</option>
+                    <option value="huvudrätt">Huvudrätt</option>
+                    <option value="efterrätt">Efterrätt</option>
+                    <option value="bakning">Bakning</option>
+                </select>
+                <textarea id="ingredients" placeholder="Ingredienser (ett per rad)"></textarea>
+                <textarea id="instructions" placeholder="Gör så här..."></textarea>
+                <label><input type="checkbox" id="isFamily"> Dela med familjen</label>
+                <button class="btn btn-primary" onclick="saveRecipe()" style="width: 100%; margin-top: 10px;">Spara recept</button>
+            </div>
+        </div>
+
+        <div id="tab-my" class="hidden">
+            <div id="myRecipes"></div>
+        </div>
+
+        <div id="tab-family" class="hidden">
+            <div class="card">
+                <h3>Familj</h3>
+                <div id="familySection">
+                    <input type="text" id="familyName" placeholder="Familjens namn">
+                    <button class="btn btn-primary" onclick="createFamily()">Skapa familj</button>
+                    <hr style="margin: 20px 0;">
+                    <input type="text" id="inviteCode" placeholder="Inbjudningskod">
+                    <button class="btn btn-secondary" onclick="joinFamily()">Gå med i familj</button>
+                </div>
+                <div id="familyInfo" class="hidden">
+                    <p>Familj: <strong id="familyNameDisplay"></strong></p>
+                    <p>Kod: <code id="familyCodeDisplay"></code></p>
+                    <button class="btn btn-secondary" onclick="copyFamilyCode()">Kopiera kod</button>
+                </div>
+            </div>
+            <div id="familyRecipes"></div>
+        </div>
+    </div>
+
     <script>
+        // 🔥 DIN NYA FIREBASE-KONFIGURATION
         const firebaseConfig = {
-            apiKey: "AIzaSyC80aJi_XyG74vIVJ6CfPmfWXpel2mVB6Q",
-            authDomain: "familjens-receptbok.firebaseapp.com",
-            projectId: "familjens-receptbok",
-            storageBucket: "familjens-receptbok.firebasestorage.app",
-            messagingSenderId: "953014453124",
-            appId: "1:953014453124:web:ff079ea12e925f653e53d1"
+            apiKey: "AIzaSyAJFdM4FrwOldaRgjyxn33k1jitTr33l2A",
+            authDomain: "receptbok-test-2024.firebaseapp.com",
+            projectId: "receptbok-test-2024",
+            storageBucket: "receptbok-test-2024.firebasestorage.app",
+            messagingSenderId: "122317991249",
+            appId: "1:122317991249:web:78849d919867acda02b770"
         };
-        
+
         firebase.initializeApp(firebaseConfig);
-        
-        function login() {
-            document.getElementById('status').textContent = "Loggar in...";
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUser = null;
+        let currentFamily = null;
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('userName').textContent = user.displayName;
+                loadMyRecipes();
+                checkFamily();
+            } else {
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('mainApp').classList.add('hidden');
+            }
+        });
+
+        function signInWithGoogle() {
+            document.getElementById('loginStatus').textContent = 'Loggar in...';
             const provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(provider)
-                .then(() => {
-                    document.getElementById('status').textContent = "✅ Inloggad!";
-                })
+            auth.signInWithPopup(provider)
                 .catch(e => {
-                    document.getElementById('status').textContent = "❌ Fel: " + e.message;
+                    document.getElementById('loginStatus').textContent = 'Fel: ' + e.message;
                     console.error(e);
+                });
+        }
+
+        function signOut() { auth.signOut(); }
+
+        function showTab(tab) {
+            document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            ['add', 'my', 'family'].forEach(t => {
+                document.getElementById('tab-' + t).classList.add('hidden');
+            });
+            document.getElementById('tab-' + tab).classList.remove('hidden');
+        }
+
+        function saveRecipe() {
+            const recipe = {
+                title: document.getElementById('title').value,
+                category: document.getElementById('category').value,
+                ingredients: document.getElementById('ingredients').value,
+                instructions: document.getElementById('instructions').value,
+                createdBy: currentUser.uid,
+                createdByName: currentUser.displayName,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            
+            const isFamily = document.getElementById('isFamily').checked;
+            
+            if (isFamily && currentFamily) {
+                db.collection('families').doc(currentFamily.id).collection('recipes').add(recipe);
+            } else {
+                db.collection('users').doc(currentUser.uid).collection('recipes').add(recipe);
+            }
+            
+            alert('Recept sparat!');
+            document.getElementById('title').value = '';
+            document.getElementById('ingredients').value = '';
+            document.getElementById('instructions').value = '';
+        }
+
+        function loadMyRecipes() {
+            db.collection('users').doc(currentUser.uid).collection('recipes')
+                .orderBy('createdAt', 'desc')
+                .onSnapshot(snapshot => {
+                    const div = document.getElementById('myRecipes');
+                    if (snapshot.empty) {
+                        div.innerHTML = '<p>Inga recept än</p>';
+                        return;
+                    }
+                    div.innerHTML = snapshot.docs.map(doc => {
+                        const r = doc.data();
+                        return `<div class="recipe-card"><div class="recipe-title">${r.title}</div><div class="recipe-meta"><span class="tag">${r.category || 'Okategoriserad'}</span></div></div>`;
+                    }).join('');
+                });
+        }
+
+        function createFamily() {
+            const name = document.getElementById('familyName').value;
+            if (!name) return;
+            const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+            
+            db.collection('families').add({
+                name,
+                code,
+                createdBy: currentUser.uid,
+                members: [{ uid: currentUser.uid, name: currentUser.displayName, role: 'admin' }]
+            }).then(ref => {
+                db.collection('userFamilies').doc(currentUser.uid).set({ familyId: ref.id });
+                currentFamily = { id: ref.id, name, code };
+                showFamilyInfo();
+            });
+        }
+
+        function joinFamily() {
+            const code = document.getElementById('inviteCode').value.toUpperCase();
+            db.collection('families').where('code', '==', code).get().then(snapshot => {
+                if (snapshot.empty) {
+                    alert('Koden hittades inte');
+                    return;
+                }
+                const family = snapshot.docs[0];
+                db.collection('families').doc(family.id).update({
+                    members: firebase.firestore.FieldValue.arrayUnion({ uid: currentUser.uid, name: currentUser.displayName, role: 'member' })
+                });
+                db.collection('userFamilies').doc(currentUser.uid).set({ familyId: family.id });
+                currentFamily = { id: family.id, ...family.data() };
+                showFamilyInfo();
+            });
+        }
+
+        function checkFamily() {
+            db.collection('userFamilies').doc(currentUser.uid).get().then(doc => {
+                if (doc.exists) {
+                    db.collection('families').doc(doc.data().familyId).get().then(familyDoc => {
+                        currentFamily = { id: familyDoc.id, ...familyDoc.data() };
+                        showFamilyInfo();
+                        loadFamilyRecipes();
+                    });
+                }
+            });
+        }
+
+        function showFamilyInfo() {
+            document.getElementById('familySection').classList.add('hidden');
+            document.getElementById('familyInfo').classList.remove('hidden');
+            document.getElementById('familyNameDisplay').textContent = currentFamily.name;
+            document.getElementById('familyCodeDisplay').textContent = currentFamily.code;
+        }
+
+        function copyFamilyCode() {
+            navigator.clipboard.writeText(currentFamily.code);
+            alert('Kod kopierad!');
+        }
+
+        function loadFamilyRecipes() {
+            db.collection('families').doc(currentFamily.id).collection('recipes')
+                .orderBy('createdAt', 'desc')
+                .onSnapshot(snapshot => {
+                    const div = document.getElementById('familyRecipes');
+                    if (snapshot.empty) {
+                        div.innerHTML = '<p>Inga familjerecept än</p>';
+                        return;
+                    }
+                    div.innerHTML = '<h4>Familjens recept</h4>' + snapshot.docs.map(doc => {
+                        const r = doc.data();
+                        return `<div class="recipe-card"><div class="recipe-title">${r.title}</div><div class="recipe-meta"><span class="tag family">Familj</span><span class="tag">${r.category || 'Okategoriserad'}</span> av ${r.createdByName}</div></div>`;
+                    }).join('');
                 });
         }
     </script>
