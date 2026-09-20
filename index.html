@@ -11,17 +11,28 @@
     <p id="status"></p>
     
     <script>
-        firebase.initializeApp({
-            apiKey: "apiKey: "AIzaSyC80aJi_XyG74vIVJ6CfPmfWXpel2mVB6Q",",
+        const firebaseConfig = {
+            apiKey: "AIzaSyC80aJi_XyG74vIVJ6CfPmfWXpel2mVB6Q",
             authDomain: "familjens-receptbok.firebaseapp.com",
-            projectId: "familjens-receptbok"
-        });
+            projectId: "familjens-receptbok",
+            storageBucket: "familjens-receptbok.firebasestorage.app",
+            messagingSenderId: "953014453124",
+            appId: "1:953014453124:web:ff079ea12e925f653e53d1"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
         
         function login() {
+            document.getElementById('status').textContent = "Loggar in...";
             const provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider)
-                .then(() => document.getElementById('status').textContent = "✅ Inloggad!")
-                .catch(e => document.getElementById('status').textContent = "❌ Fel: " + e.message);
+                .then(() => {
+                    document.getElementById('status').textContent = "✅ Inloggad!";
+                })
+                .catch(e => {
+                    document.getElementById('status').textContent = "❌ Fel: " + e.message;
+                    console.error(e);
+                });
         }
     </script>
 </body>
